@@ -1,4 +1,4 @@
-#include<iostream>
+п»ї#include<iostream>
 using namespace std;
 #define tab "\t"
 
@@ -6,8 +6,8 @@ class List {
 	class Element {
 
 		int Data;
-		Element* pNext;//сдедующий элемент
-		Element* pPrev;//предведущий элемет
+		Element* pNext;//СЃРґРµРґСѓСЋС‰РёР№ СЌР»РµРјРµРЅС‚
+		Element* pPrev;//РїСЂРµРґРІРµРґСѓС‰РёР№ СЌР»РµРјРµС‚
 	public:
 		Element(int Data, Element* pNext = nullptr, Element* pPrev = nullptr) :Data(Data), pNext(pNext), pPrev(pPrev) {
 			cout << "EConstructor " << this << endl;
@@ -160,7 +160,7 @@ void main() {
 
 
 	int n;
-	cout << "введите размер списка: "; cin >> n;
+	cout << "РІРІРµРґРёС‚Рµ СЂР°Р·РјРµСЂ СЃРїРёСЃРєР°: "; cin >> n;
 	List list;
 	for (int i = 0; i < n; i++) {
 		list.push_back(rand() % 100);
