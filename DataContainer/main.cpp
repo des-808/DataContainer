@@ -63,8 +63,7 @@ public:
 		return this->Head;
 	}
 
-	const Iterator end()const
-	{
+	const Iterator end()const{
 		return nullptr;
 	}
 
@@ -77,14 +76,14 @@ public:
 		cout << "LConstructor " << this << endl;
 	}
 
-	List(const std::initializer_list<int>& il) :List()
+	List(const std::initializer_list<int>& xz) :List()
 	{
-		for (const int* it = il.begin(); it != il.end(); it++){push_back(*it);	}
-		cout << "ILConstructor:\t" << this << endl;
+		for (const int* temp = xz.begin(); temp != xz.end(); temp++){push_back(*temp);	}
+		cout << "xzConstructor:\t" << this << endl;
 	}
 	List(const List& other) :List()
 	{
-		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext){push_back(Temp->Data);}
+		for (Element* temp = other.Head; temp; temp = temp->pNext){push_back(temp->Data);}
 			
 		cout << "CopyConstructor:\t" << this << endl;
 	}
