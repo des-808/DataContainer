@@ -2,6 +2,10 @@
 using namespace std;
 #define tab "\t"
 
+
+
+
+
 class List {
 	class Element {
 
@@ -16,21 +20,97 @@ class List {
 			cout << "EDestructor " << this << endl;
 		}
 		friend class List;
-	}*Head, * Tail;
+	};//*Head, * Tail;
+	Element* Head;
+	Element* Tail;
 	size_t size;
 
 public:
+	class Iterator
+	{
+		Element* Temp;
+	public:
+		Iterator(Element* Temp = nullptr) :Temp(Temp) {
+			cout << "ItConstructor:\t" << this << endl;
+		}
+		~Iterator() {
+			cout << "ItDestructor:\t" << this << endl;
+		}
+
+		operator bool()const{
+			return Temp;
+		}
+		bool operator!=(const Iterator& other)const{
+			return this->Temp != other.Temp;
+		}
+		Iterator& operator--(){
+			Temp = Temp->pPrev;
+			return *this;
+		}
+		Iterator& operator++(){
+			Temp = Temp->pNext;
+			return *this;
+		}
+		const int& operator*()const{
+			return Temp->Data;
+		}
+		int& operator*(){
+			return Temp->Data;
+		}
+	};
+
+	const Iterator begin()const{
+		return this->Head;
+	}
+
+	const Iterator end()const
+	{
+		return nullptr;
+	}
+
+
+
+
 	List() {
 		Head = Tail = nullptr;
 		size = 0;
 		cout << "LConstructor " << this << endl;
 	}
+
+	List(const std::initializer_list<int>& il) :List()
+	{
+		for (const int* it = il.begin(); it != il.end(); it++){push_back(*it);	}
+		cout << "ILConstructor:\t" << this << endl;
+	}
+	List(const List& other) :List()
+	{
+		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext){push_back(Temp->Data);}
+			
+		cout << "CopyConstructor:\t" << this << endl;
+	}
+
+
+
 	~List() {
 		//while (Head)pop_front();
 		//while (Head)pop_back();
-
 		cout << "LDestructor " << this << endl;
 	}
+
+
+
+	//List& operator=(const List& other)
+	//{
+	//	if (this == &other)return *this;
+	//	//while (Head)pop_front();
+	//	//while (Head)pop_back();
+	//	this->~List();
+	//	for (Element* Temp = other.Head; Temp; Temp = Temp->pNext){push_back(Temp->Data);}
+	//	cout << "CopyAssignment:\t" << this << endl;
+	//	return *this;
+	//}
+
+
 	void push_front(int Data) {
 		if (Head == nullptr && Tail == nullptr) {
 			Head = Tail = new Element(Data);
@@ -166,17 +246,24 @@ void main() {
 		list.push_back(rand() % 100);
 	}
 	list.print();
-	/*list.revers_print();
-	cout << endl;*/
-	//list.pop_front();
-	//list.print(); 
-	cout << "Insert:" << endl;
-	list.insert(444, 3);
-	list.print();
-	list.revers_print();
-	cout << "Erase:" << endl;
-	list.erase(3);
-	list.print();
-	list.revers_print();
+	///*list.revers_print();
+	//cout << endl;*/
+	////list.pop_front();
+	////list.print(); 
+	//cout << "Insert:" << endl;
+	//list.insert(444, 3);
+	//list.print();
+	//list.revers_print();
+	//cout << "Erase:" << endl;
+	//list.erase(3);
+	//list.print();
+	//list.revers_print();
+
+
+	cout << "----------------------------------------------------" << endl;
+	List list44 = { 3, 5, 8, 13, 21 };
+	for (int i : list44)
+		cout << i << tab;
+	cout << endl;
 
 }
