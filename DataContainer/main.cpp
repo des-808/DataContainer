@@ -98,16 +98,16 @@ public:
 
 
 
-	//List& operator=(const List& other)
-	//{
-	//	if (this == &other)return *this;
-	//	//while (Head)pop_front();
-	//	//while (Head)pop_back();
-	//	this->~List();
-	//	for (Element* Temp = other.Head; Temp; Temp = Temp->pNext){push_back(Temp->Data);}
-	//	cout << "CopyAssignment:\t" << this << endl;
-	//	return *this;
-	//}
+	List& operator=(const List& other)
+	{
+		if (this == &other)return *this;
+		//while (Head)pop_front();
+		//while (Head)pop_back();
+		this->~List();
+		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext){push_back(Temp->Data);}
+		//cout << "CopyAssignment:\t" << this << endl;
+		return *this;
+	}
 
 
 	void push_front(int Data) {
@@ -180,7 +180,6 @@ public:
 			for (int i = 0; i < size - Index - 1; i++) {
 				Temp = Temp->pPrev;
 			}
-
 		}
 		Element* New = new Element(Data);
 		New->pNext = Temp;
@@ -261,8 +260,9 @@ void main() {
 
 	cout << "----------------------------------------------------" << endl;
 	List list44 = { 3, 5, 8, 13, 21 };
-	for (int i : list44)
-		cout << i << tab;
-	cout << endl;
+	for (int i : list44){
+		cout << i << endl;
+	}
+	
 
 }
