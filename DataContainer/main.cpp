@@ -98,7 +98,7 @@ public:
 		}
 		ConstReversIterator& operator-(int) {
 			ConstReversIterator old = *this;
-			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext; 
 			return old;
 		}
 	};
