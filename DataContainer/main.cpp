@@ -3,17 +3,17 @@ using namespace std;
 #define tab "\t"
 
 
-
+template<typename T>
 
 
 class List {
 	class Element {
 
-		int Data;
+		T Data;
 		Element* pNext;//сдедующий элемент
 		Element* pPrev;//предведущий элемет
 	public:
-		Element(int Data, Element* pNext = nullptr, Element* pPrev = nullptr) :Data(Data), pNext(pNext), pPrev(pPrev) {
+		Element(T Data, Element* pNext = nullptr, Element* pPrev = nullptr) :Data(Data), pNext(pNext), pPrev(pPrev) {
 			cout << "EConstructor " << this << endl;
 		}
 		~Element() {
@@ -41,7 +41,7 @@ class List {
 		bool operator!=(const ConstBaseIterator& other)const {
 			return this->Temp != other.Temp;
 		}
-		const int& operator*()const {
+		const T& operator*()const {
 			return Temp->Data;
 		}
 		
@@ -57,21 +57,21 @@ public:
 		}
 
 		ConstIterator& operator--(){
-			Temp = Temp->pPrev;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 			return *this;
 		}
 		ConstIterator& operator--(int) {
 			ConstIterator old = *this;
-			Temp = Temp->pPrev;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 			return old;
 		}
 		ConstIterator& operator++(){//постфиксный
-			Temp = Temp->pNext;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 			return *this;
 		}
 		ConstIterator& operator++(int) {//префиксный
 			ConstIterator old = *this;
-			Temp = Temp->pNext;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 			return old;
 		}
 	};
@@ -84,21 +84,21 @@ public:
 			cout << "REversIteratorDestructor " << this << endl;
 		}
 		ConstReversIterator& operator++() {
-			Temp = Temp->pPrev;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 			return *this;
 		}
 		ConstReversIterator& operator++(int) {
 			ConstReversIterator old = *this;
-			Temp = Temp->pPrev;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pPrev;
 			return old;
 		}
 		ConstReversIterator& operator--() {
-			Temp = Temp->pNext;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 			return *this;
 		}
 		ConstReversIterator& operator-(int) {
 			ConstReversIterator old = *this;
-			Temp = Temp->pNext;
+			ConstBaseIterator::Temp = ConstBaseIterator::Temp->pNext;
 			return old;
 		}
 	};
@@ -106,14 +106,14 @@ public:
 	public:
 		Iterator(Element* Temp) :ConstIterator(Temp) {}
 		~Iterator() {}
-		int& operator*(){return Temp->Data;}
+		T& operator*(){return ConstBaseIterator::Temp->Data;}
 	};
 
 	class ReversIterator :public ConstReversIterator {
 	public:
 		ReversIterator(Element* Temp) :ConstReversIterator(Temp){}
 		~ReversIterator() {}
-		int& operator*() {return Temp->Data;}
+		int& operator*() {return ConstBaseIterator::Temp->Data;}
 	};
 
 	const ConstIterator cbegin()const{
@@ -148,11 +148,11 @@ public:
 		cout << "LConstructor " << this << endl;
 	}
 
-	List(const std::initializer_list<int>& xz) :List()
+	List(const std::initializer_list<T>& xz) :List()
 	{
 		/*for (const int* temp = xz.begin(); temp != xz.end(); temp++){push_back(*temp);	}
 		cout << "xzConstructor:\t" << this << endl;*/
-		for (int i : xz){push_back(i);}
+		for (T i : xz){push_back(i);}
 	}
 	List(const List& other) :List()
 	{
@@ -180,7 +180,7 @@ public:
 		return *this;
 	}
 
-	void push_front(int Data) {
+	void push_front(T Data) {
 		if (Head == nullptr && Tail == nullptr) {
 			Head = Tail = new Element(Data);
 			size++;
@@ -194,7 +194,7 @@ public:
 		size++;
 	}
 
-	void push_back(int Data) {
+	void push_back(T Data) {
 		if (Head == nullptr && Tail == nullptr) {
 			return push_front(Data);
 		}
@@ -230,7 +230,7 @@ public:
 		size--;
 	}
 
-	void insert(int Data, int Index) {
+	void insert(T Data, int Index) {
 
 		if (Index > size)return;
 		if (Index == size)return push_back(Data);
@@ -279,7 +279,6 @@ public:
 		Temp->pNext->pPrev = Temp->pPrev;
 		delete Temp;
 		size--;
-
 	}
 
 	void print()const {
@@ -294,10 +293,10 @@ public:
 		}
 	}
 };
-
-List operator+(const List& left, const List& right) {
-	List cat = left;
-	for (List::ConstIterator it = right.cbegin(); it != right.cend(); ++it) {
+template<typename T>
+List<T> operator+(const List<T>& left, const List<T>& right) {
+	List<T> cat = left;
+	for ( typename List<T>::ConstIterator it = right.cbegin(); it != right.cend(); ++it) {
 		cat.push_back(*it);
 		//*it *= 1000;
 	}
@@ -330,7 +329,7 @@ void main() {
 	//list.revers_print();
 
 
-	//cout << "----------------------------------------------------" << endl;
+	cout << "----------------------------------------------------" << endl;
 	/*List list44 = { 3, 5, 8, 13, 21 };
 	for (int i : list44) {
 		cout << i << endl;
@@ -339,15 +338,55 @@ void main() {
 	//for(int i:list)cout<<i<<tab; cout<<endl;
 	//for (List::ReversIterator it = list.rbegin(); it != list.rend(); ++it)cout << *it << endl; 
 
-	cout << "list43" << endl;
-	List list43 = { 2,5,8,6,9 };
+	/*cout << "list43" << endl;
+	List<int> list43 = { 2,5,8,6,9 };
 	cout << "list45" << endl;
-	List list45 = { 7, 44, 77, 99, 11 };
+	List<int> list45 = { 7, 44, 77, 99, 11 };
 	list45.print();
 	cout << "list46 = list43+list43" << endl;
-	List list46 = list43 + list45;
+	List<int> list46 = list43 + list45;
 	list46.print();
 
 	for (int i : list43)cout << i << tab; cout << endl;
-	for (List::ReversIterator it = list45.rbegin(); it != list45.rend(); ++it)cout << *it << endl;
+	for (List<int>::ReversIterator it = list45.rbegin(); it != list45.rend(); ++it)cout << *it << endl;*/
+
+
+	List<int> i_list = { 3,5,8,13,21 };
+	for (int i:i_list)cout << i << tab; cout << endl;
+	List<double> d_list = { 3.1,5.1,8.1,13.1,21.1 };
+	for (double i : d_list)cout << i << tab; cout << endl;
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ШАБЛОНЫ КЛАССОВ
+ШАБЛОННЫМ НАЗЫВАЕТСЯ КЛАСС ТИП ПОЛЕЙ КОТОРОГО ОПРЕДЕЛЯЕТСЯ ВО ВРЕМЯ СОЗДАНИЯ ОБЬЕКТА
+если к обычному обращаемся 
+class object;
+
+Class<type> object;
+где тайп показывает какого типа будут поля класса в создоваемом обьекте.
+к шаблонному класу  можно обратиться только после указания типа
+для того что бы сделать класс шаблонным перед ним достаточно сделать шаблон при помощи
+
+template<typename T>
+после созд шаблона любая переменная член класса могут быть шаблонного типа
+Все методы в нутри шаблонного класса автоматически становятся шаблонными
+
+*/
