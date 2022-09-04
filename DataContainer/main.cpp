@@ -108,7 +108,7 @@ public:
 		//cout << "CopyAssignment:\t" << this << endl;
 		return *this;
 	}
-
+	 
 
 	void push_front(int Data) {
 		if (Head == nullptr && Tail == nullptr) {
